@@ -1,5 +1,6 @@
 import Web3 from 'web3';
 import {default as contract} from 'truffle-contract';
+import Tx from 'ethereumjs-tx';
 import tokenArtifact from '../build/contracts/Token.json';
 import globals from '../config/globals.config.json';
 
@@ -16,13 +17,37 @@ if (typeof tokenContract.currentProvider.sendAsync !== "function") {
     };
   }
 
+export function deployContract(fromAddress, privateKey, data){
+    let gasPrice = '0x20';
+    const bufferPrivKey = Buffer.from(privateKey,'hex');
+    const gasLimit = web3.utils.toHex(5000000);
+    /**
+     * Todo: find way to get correct nonce
+     */
+    let nonce = web3.eth.getTransactionCount(fromAddress, 'pending');
+    nonce = web3.utils.toHex(4);
+    const rawTx = {
+        nonce,
+        gasPrice,
+        gasLimit,
+        value: '0x00',
+        from: fromAddress,
+        data
+    };
+    const tx = new Tx(rawTx);
+    tx.sign(bufferPrivKey);
+    const serializedTx = tx.serialize().toString('hex');
+    return web3.eth.sendSignedTransaction('0x' + serializedTx)
+}
+
+deployContract('0xb516151b00cb282389bccf0996480e0e40c518f9',
+'245daaa3bd5acffb67e6c82ed151e9f31f580ee6c822b2f5910510223e286e5f', tokenArtifact.bytecode).then(value => {
+    console.log(value);
+})
+
 export function deployToken(fromAddr, args = {name: 'BDB Token', symbol: 'BDBT', supply: 100000000}) {
     tokenContract.defaults({from: fromAddr})
     return tokenContract.new(args.name, args.symbol, args.supply, {from: fromAddr, gas: 5000000})
-}
-
-export function unlockAccount(address, passphrase = globals.userPasssphrse, timeout = 1000) {
-    return web3.eth.personal.unlockAccount(address, passphrase, timeout);
 }
 
 export function fundAccount(to, from, ethers) {
@@ -42,7 +67,7 @@ export function decryptKeystore(keystoreJsonV3, password){
     return web3.eth.accounts.decrypt(keystoreJsonV3, password);
 }
 
-deployToken('0xfd3cf7b39e1301d5f0686e8760e68244a9cf18d1').then(
+/* deployToken('0xc15c5819f21ced45b63838fd875b3091631f869b').then(
     instance => {
         instance.Transfer().watch((err, result)=>{
             if(!err){
@@ -50,7 +75,7 @@ deployToken('0xfd3cf7b39e1301d5f0686e8760e68244a9cf18d1').then(
                 console.log(from, to, value);
             }
         })
-        instance.transfer('0xfd3cf7b39e1301d5f0686e8760e68244a9cf18d1', 10);
+        instance.transfer('0x65f2b50437d1584fc2a5eaa8b565f8c983e2bf42', 10);
         return instance;
     }
-).catch(err => console.log(err));
+).catch(err => console.log(err)); */
