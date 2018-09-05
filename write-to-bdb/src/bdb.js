@@ -1,15 +1,15 @@
-const driver = require('bigchaindb-driver') 
-const bdbConfig = require("../config/bigchaindb.config.json");
-const bip39  = require("bip39")
+import * as driver from 'bigchaindb-driver'; 
+import bdbConfig from '../config/bigchaindb.config.json';
+import globalConfig from '../config/globals.config.json';
+import * as bip39 from 'bip39';
 
-const BDB_PATH = "http://localhost:9984/api/v1/"
 let conn
 
 const createKeypair = function (passphrase = 'example passphrase') {
     return new driver.Ed25519Keypair(bip39.mnemonicToSeed(passphrase).slice(0, 32))
 }
 
-const adminKeypair = createKeypair(bdbConfig)
+const adminKeypair = createKeypair(globalConfig.adminPassphrase)
 
 const createNewDivisibleAsset = async function (asset, amount = '900719925474090', keypair = adminKeypair) {
     _getConnection()
@@ -151,7 +151,7 @@ const transferTokens = async function (fromKeyPair = adminKeypair, assetId, amou
 // private: creates a connection to BDB server
 const _getConnection = function _getConnection() {
     if (!conn) {
-        conn = new driver.Connection(BDB_PATH)
+        conn = new driver.Connection(bdbConfig.host+bdbConfig.api, bdbConfig.headers)
     }
 }
 
@@ -159,5 +159,4 @@ module.exports = {
     createKeypair : createKeypair,
     createNewDivisibleAsset : createNewDivisibleAsset,
     transferTokens: transferTokens
-
 };

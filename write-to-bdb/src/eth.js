@@ -4,8 +4,8 @@ import {
 } from 'truffle-contract';
 import Tx from 'ethereumjs-tx';
 import tokenArtifact from '../build/contracts/Token.json';
+import tokenConfig from '../config/token.config.json';
 import globals from '../config/globals.config.json';
-import bdbConfig from '../config/bigchaindb.config.json';
 import bdb from './bdb'
 import jetpack from 'fs-jetpack'
 
@@ -13,11 +13,9 @@ const ETH_HOST = 'http://127.0.0.1:8545';
 const tokenContract = contract(tokenArtifact);
 const web3 = new Web3(new Web3.providers.WebsocketProvider(ETH_HOST));
 
-const initialSupply = 100000000
-const transferAmount = 10
 const ethAccount = {
-    address: '0x2dd9253b379bed268947d71483c63114859d9e46',
-    privateKey: '4953b960d5ed29fbdd8cdaa03c4228be995316cae0e0fb988f742455a68d1254'
+    address: '0x967662ac01db48bec7f5f90c0be9ae64e2295e4a',
+    privateKey: '975bde796ec0e69367859da5c0fd96c408ea116aa42f86feec285d563c90efd5'
 }
 
 tokenContract.setProvider(new Web3.providers.WebsocketProvider(ETH_HOST));
@@ -72,18 +70,16 @@ export function decryptKeystore(keystoreJsonV3, password) {
     return web3.eth.accounts.decrypt(keystoreJsonV3, password);
 }
 
-/* web3.eth.subscribe('logs', {
-}, function(error, result){
-        console.log(error, result);
-}); */
-
-deployContract(ethAccount.address, ethAccount.privateKey, tokenArtifact.abi, tokenArtifact.bytecode, ['BDB Token', 'BDBT', 1000000000]).then(async value => {
+deployContract(ethAccount.address, ethAccount.privateKey, tokenArtifact.abi, tokenArtifact.bytecode, 
+                [tokenConfig.name, tokenConfig.symbol, tokenConfig.supply]).then(async value => {
     const asset = {
-        name: 'ethereum ERC20 token',
+        name: tokenConfig.name,
+        symbol: tokenConfig.symbol,
+        ethAddress: value.contractAddress,
         timestamp: Date.now()
     }
     // Mint token in BigchainDB
-    const bdbToken = await bdb.createNewDivisibleAsset(asset, initialSupply)
+    const bdbToken = await bdb.createNewDivisibleAsset(asset, tokenConfig.supply)
     updateConfig('tokenId', bdbToken.id);
     let tokenCon = new web3.eth.Contract(tokenArtifact.abi, value.contractAddress);
     tokenCon.events.Transfer({}, async function (err, event) {
@@ -103,10 +99,9 @@ deployContract(ethAccount.address, ethAccount.privateKey, tokenArtifact.abi, tok
     })
 })
 
-
 // Update with the asset id of the token
 async function updateConfig(id, value) {
-    const env = jetpack.cwd(__dirname).read('../config/bigchaindb.config.json', 'json');
+    const env = jetpack.cwd(__dirname).read('../config/token.config.json', 'json');
     env[id] = value
-    jetpack.cwd(__dirname).write('../config/bigchaindb.config.json', env);
+    jetpack.cwd(__dirname).write('../config/token.config.json', env);
 }
