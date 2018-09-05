@@ -92,8 +92,7 @@ const transferTokens = async function (fromKeyPair = adminKeypair, assetId, amou
         )
         receivers.push(output)
         // store how much we already spent
-        totalAmount = totalAmount + parseInt(entry.amount)
-        console.log('aaaaa', entry)
+        totalAmount = totalAmount + parseInt(entry.amount);
     }
 
     // fullfill old outputs based on amount spent on new outputs

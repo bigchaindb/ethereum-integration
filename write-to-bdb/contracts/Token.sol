@@ -9,8 +9,6 @@ contract Token is BasicToken {
     uint8 public decimals = 0;
     uint public INITIAL_SUPPLY;
 
-    event test(string hi);
-
     constructor(string _name, string _symbol, uint _initialSupply) public {
         name = _name;
         symbol = _symbol; 
