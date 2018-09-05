@@ -1,5 +1,7 @@
 {
-    "host": "http://127.0.0.1",
-    "api": "/api/v1/",
-    "headers": {}
+  "host": "http://127.0.0.1",
+  "api": "/api/v1/",
+  "headers": {},
+  "adminPasshphrase": "example of admin keypair",
+  "tokenId": "abb32d2640c02deb43638d67392238bf41e81fa1551feca2e25585951809b9b3"
 }

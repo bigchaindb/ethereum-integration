@@ -5,10 +5,20 @@ import {
 import Tx from 'ethereumjs-tx';
 import tokenArtifact from '../build/contracts/Token.json';
 import globals from '../config/globals.config.json';
+import bdbConfig from '../config/bigchaindb.config.json';
+import bdb from './bdb'
+import jetpack from 'fs-jetpack'
 
 const ETH_HOST = 'http://127.0.0.1:8545';
 const tokenContract = contract(tokenArtifact);
 const web3 = new Web3(new Web3.providers.HttpProvider(ETH_HOST));
+
+const initialSupply = 100000000
+const transferAmount = 10
+const ethAccount = {
+    address: '0x493d8f220d9cd23f9b84f48170650980f4dbccd4',
+    privateKey: 'a355ff8a12d0d9824536c9ea5a99d01ebee4e18c4468aa7f8edf01c53011be78'
+}
 
 tokenContract.setProvider(new Web3.providers.HttpProvider(ETH_HOST));
 if (typeof tokenContract.currentProvider.sendAsync !== "function") {
@@ -58,20 +68,35 @@ export function decryptKeystore(keystoreJsonV3, password) {
 }
 
 
-deployContract('0xb516151b00cb282389bccf0996480e0e40c518f9',
-    '245daaa3bd5acffb67e6c82ed151e9f31f580ee6c822b2f5910510223e286e5f', tokenArtifact.bytecode).then(value => {
+deployContract(ethAccount.address, ethAccount.privateKey, tokenArtifact.bytecode).then(async value => {
     console.log(value.contractAddress)
+    const asset = {
+        name: 'ethereum ERC20 token',
+        timestamp: Date.now()
+    }
+    // Mint token in BigchainDB
+    const bdbToken = await bdb.createNewDivisibleAsset(asset, initialSupply)
+    updateConfig('tokenId', bdbToken.id)
     tokenContract.at(value.contractAddress).then(instance => {
-        instance.Transfer().watch((err, result) => {
+        instance.Transfer().watch(async (err, result) => {
             if (!err) {
                 const {
                     from,
                     to,
                     value
                 } = result.args;
-                console.log(from, to, value);
+                const newBdbUser = bdb.createKeypair('random number will be')
+                const transferBdb = await bdb.transferTokens(undefined, bdbToken.id, transferAmount, newBdbUser.publicKey)
             }
-        })
-        return instance;
-    });
+            return instance;
+        });
+    })
 })
+
+
+// Update with the asset id of the token
+async function updateConfig(id, value) {
+    const env = jetpack.cwd(__dirname).read('../config/bigchaindb.config.json', 'json');
+    env[id] = value
+    jetpack.cwd(__dirname).write('../config/bigchaindb.config.json', env);
+}

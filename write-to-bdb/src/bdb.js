@@ -1,35 +1,35 @@
-const driver = require('bigchaindb-driver')
-const 
+const driver = require('bigchaindb-driver') 
 const bdbConfig = require("../config/bigchaindb.config.json");
+const bip39  = require("bip39")
 
+const BDB_PATH = "http://localhost:9984/api/v1/"
+let conn
 
-module.exports = function createKeypair(passphrase = 'example passphrase') {
+const createKeypair = function (passphrase = 'example passphrase') {
     return new driver.Ed25519Keypair(bip39.mnemonicToSeed(passphrase).slice(0, 32))
 }
 
 const adminKeypair = createKeypair(bdbConfig)
 
-module.exports = async function createNewDivisibleAsset(keypair = adminKeypair, asset, amount = '900719925474090') {
+const createNewDivisibleAsset = async function (asset, amount = '900719925474090', keypair = adminKeypair) {
     _getConnection()
     const txCreateDivisible = driver.Transaction.makeCreateTransaction(
         asset, {
             metaDataMessage: 'new token minted'
-        }, [driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(keypair.publicKey), amount)],
+        }, [driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(keypair.publicKey), amount.toString())],
         keypair.publicKey
     )
     const txSigned = driver.Transaction.signTransaction(txCreateDivisible, keypair.privateKey)
-    let tx
-    await conn.postTransactionCommit(txSigned)
+    return await conn.postTransactionCommit(txSigned)
         .then((res) => {
-            tx = res
+            console.log('Divisible asset created', res.id)
+            return res
         })
-
-    return tx
 };
 
 // Transfer divisible asset
 
-module.exports = async function transferTokens(fromKeyPair = adminKeypair, assetId, amount, toPublicKey, meta = {
+const transferTokens = async function (fromKeyPair = adminKeypair, assetId, amount, toPublicKey, meta = {
     meta: new Date()
 }) {
 
@@ -82,6 +82,7 @@ module.exports = async function transferTokens(fromKeyPair = adminKeypair, asset
     // generate new outputs with total amount spent in those outputs
     var totalAmount = 0
     const receivers = []
+
     // loop over publicKeys that are receiving items
     for (const entry of toPublicKeysAmounts) {
         // create output with desired amount
@@ -92,7 +93,9 @@ module.exports = async function transferTokens(fromKeyPair = adminKeypair, asset
         receivers.push(output)
         // store how much we already spent
         totalAmount = totalAmount + parseInt(entry.amount)
+        console.log('aaaaa', entry)
     }
+
     // fullfill old outputs based on amount spent on new outputs
     var totalSpent = 0
     const fullfillers = []
@@ -124,7 +127,6 @@ module.exports = async function transferTokens(fromKeyPair = adminKeypair, asset
             break;
         }
     }
-
     // construct transaction with new outputs and inputs pointing to old outputs
     const txTransfer = driver.Transaction.makeTransferTransaction(
         fullfillers,
@@ -145,3 +147,18 @@ module.exports = async function transferTokens(fromKeyPair = adminKeypair, asset
             return false
         });
 }
+
+
+// private: creates a connection to BDB server
+const _getConnection = function _getConnection() {
+    if (!conn) {
+        conn = new driver.Connection(BDB_PATH)
+    }
+}
+
+module.exports = {
+    createKeypair : createKeypair,
+    createNewDivisibleAsset : createNewDivisibleAsset,
+    transferTokens: transferTokens
+
+};
