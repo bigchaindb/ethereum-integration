@@ -9,7 +9,7 @@ let latitude = latInit, longitude = longInit;
 let truck = "truck1";
 let countsToExit = 10;
 
-// Execute every 10 seconds
+// truck sends location every 5 seconds
 var j = schedule.scheduleJob('*/5 * * * * *', function () {
 
     //check if truck 1 reached Hamburg
@@ -32,7 +32,7 @@ var j = schedule.scheduleJob('*/5 * * * * *', function () {
     //if truck 2 reaches midway to Hamburg, 
     //it gets Kaput and stops sending location
     if(countsToExit == 0 && truck == "truck2"){
-        console.log(truck  + " will got kaput in between Berlin to Hamburg...");
+        console.log(truck  + " got kaput in between Berlin to Hamburg...");
         bdb.sendLocation(truck, location);
         process.exit(0);
     }
