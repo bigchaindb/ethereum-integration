@@ -19,6 +19,7 @@
   "dependencies": {
     "bigchaindb-driver": "4.1.0",
     "bip39": "2.5.0",
+    "jetpack": "0.9.0",
     "openzeppelin-solidity": "1.12.0",
     "web3": "1.0.0-beta.35"
   },

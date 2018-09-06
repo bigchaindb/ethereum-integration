@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import jetpack from 'fs-jetpack'
 import tokenConfig from '../config/token.config.json';
 import network from '../config/network.config.json';
 import keys from '../config/keys.config.json';
