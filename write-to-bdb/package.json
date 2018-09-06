@@ -2,7 +2,7 @@
   "name": "write-to-bdb",
   "version": "1.0.0",
   "description": "PoC2",
-  "main": "index.js",
+  "main": "src/eth.js",
   "directories": {
     "test": "test"
   },
@@ -18,15 +18,13 @@
   "license": "Apache-2.0",
   "dependencies": {
     "bigchaindb-driver": "4.1.0",
-    "bip39": "^2.5.0",
-    "ethereumjs-tx": "^1.3.7",
-    "fs-jetpack": "^2.1.0",
+    "bip39": "2.5.0",
     "openzeppelin-solidity": "1.12.0",
-    "truffle-contract": "3.0.6",
     "web3": "1.0.0-beta.35"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-preset-env": "1.7.0"
+  }
 }

@@ -1,6 +1,0 @@
-{
-  "host": "http://127.0.0.1:9984",
-  "api": "/api/v1/",
-  "headers": {},
-  "adminPasshphrase": "example of admin keypair"
-}

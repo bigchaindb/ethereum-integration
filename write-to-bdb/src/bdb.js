@@ -1,6 +1,5 @@
 import * as driver from 'bigchaindb-driver'; 
-import bdbConfig from '../config/bigchaindb.config.json';
-import globalConfig from '../config/globals.config.json';
+import network from '../config/network.config.json';
 import * as bip39 from 'bip39';
 
 let conn
@@ -9,10 +8,9 @@ const createKeypair = function (passphrase = 'example passphrase') {
     return new driver.Ed25519Keypair(bip39.mnemonicToSeed(passphrase).slice(0, 32))
 }
 
-const adminKeypair = createKeypair(globalConfig.adminPassphrase)
-
-const createNewDivisibleAsset = async function (asset, amount = '900719925474090', keypair = adminKeypair) {
+const createNewDivisibleAsset = async function (asset, amount = '900719925474090', passphrase) {
     _getConnection()
+    const keypair = createKeypair(passphrase);
     const txCreateDivisible = driver.Transaction.makeCreateTransaction(
         asset, {
             metaDataMessage: 'new token minted'
@@ -29,11 +27,11 @@ const createNewDivisibleAsset = async function (asset, amount = '900719925474090
 
 // Transfer divisible asset
 
-const transferTokens = async function (fromKeyPair = adminKeypair, assetId, amount, toPublicKey, meta = {
-    meta: new Date()
+const transferTokens = async function (passphrase, assetId, amount, toPublicKey, meta = {
+    timestamp: new Date()
 }) {
 
-
+    const fromKeyPair = createKeypair(passphrase);
     const toPublicKeysAmounts = [{
         publicKey: toPublicKey,
         amount
@@ -151,7 +149,7 @@ const transferTokens = async function (fromKeyPair = adminKeypair, assetId, amou
 // private: creates a connection to BDB server
 const _getConnection = function _getConnection() {
     if (!conn) {
-        conn = new driver.Connection(bdbConfig.host+bdbConfig.api, bdbConfig.headers)
+        conn = new driver.Connection(network.bigchaindb.host+network.bigchaindb.api, network.bigchaindb.headers)
     }
 }
 

@@ -2,5 +2,7 @@
   "name": "BDB Token",
   "symbol": "BDBT",
   "supply": 1000000,
-  "tokenId": "70b944e6bb97fdc123cfef04a016095fdb955ef3021a073fcd7bcbc20ded64e0"
+  "address": "",
+  "bigchaindbId": "",
+  "abi": []
 }

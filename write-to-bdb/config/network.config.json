@@ -1,0 +1,10 @@
+{
+  "bigchaindb":{
+    "host": "http://127.0.0.1:9984",
+    "api": "/api/v1/",
+    "headers": {}
+  },
+  "ethereum":{
+    "host":"http://127.0.0.1:8545"
+  }
+}
