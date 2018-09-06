@@ -15,7 +15,7 @@ const asset = {
     timestamp: Date.now()
 }
 
-const bdbId = tokenConfig.bigchaindbId;
+let bdbId = tokenConfig.bigchaindbId;
 
 async function mintAndListen() {
     // Mint token in BigchainDB if id not present
