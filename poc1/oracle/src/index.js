@@ -10,14 +10,13 @@ const bdbAdapterInstance = require("../build/contracts/BdbAdapter.json");
 const bdbAdapter = new web3.eth.Contract(bdbAdapterInstance.abi, config.parsed.BDBADAPTERADDRESS, {
   from: config.parsed.FROMADDRESS
 });
-const oraclePayment = 500000;
 
-function sendPayment(sendTo,bdbPublicKey){
-  const encoded = bdbAdapter.methods.sendPayment(sendTo,bdbPublicKey).encodeABI()
+function sendPayment(bdbPublicKey, sendTo, sendAmount){
+  const encoded = bdbAdapter.methods.sendPayment(bdbPublicKey, sendTo, sendAmount).encodeABI()
   const tx = {
     to: config.parsed.BDBADAPTERADDRESS,
     gas: web3.utils.toHex(7000000),
-    value: web3.utils.toHex(1+oraclePayment),
+    value: web3.utils.toHex(sendAmount+parseInt(config.parsed.ORACLEGAS)),
     data: encoded
   }
   web3.eth.accounts.signTransaction(tx, "0x"+config.parsed.FROMADDRESSPRIVKEY).then(signed => {
@@ -25,8 +24,8 @@ function sendPayment(sendTo,bdbPublicKey){
   });
 }
 
-// sendPayment(<eth address of receiving>,<public key of BDB asset owner>)
-sendPayment("0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716","3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr")
+// sendPayment(<public key of BDB asset owner>, <eth address of receiving>, <send ethereum amount>)
+sendPayment("3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr","0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716",100)
 
 /*
 // get ether balance
@@ -34,7 +33,7 @@ web3.eth.getBalance(config.parsed.FROMADDRESS).then((data) => {
   console.log("ether balance: ",data);
 });
 // get variable amount
-bdbAdapter.methods.amount().call({from: "0x55164001b525c601ecee49decaec407f5fcc2890"})
+bdbAdapter.methods.amount().call()
   .then(result => console.log("result", result))
   .catch(error => console.log("error", error));
 */
