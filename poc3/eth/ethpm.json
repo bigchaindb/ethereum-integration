@@ -1,0 +1,14 @@
+{
+  "package_name": "oracle",
+  "version": "1.0.0",
+  "description": "",
+  "authors": [],
+  "keywords": [
+    "ethereum",
+    "addition"
+  ],
+  "dependencies": {
+    "oraclize-api": "^1.0.0"
+  },
+  "license": "MIT"
+}
