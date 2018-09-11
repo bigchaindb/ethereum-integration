@@ -1,0 +1,23 @@
+{
+  "name": "query-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "fill": "node src/fill.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bigchaindb-driver": "^4.1.0",
+    "bip39": "^2.5.0",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "debug": "^3.1.0",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.4",
+    "morgan": "^1.9.0"
+  }
+}
