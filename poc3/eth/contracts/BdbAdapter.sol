@@ -4,10 +4,9 @@ import "oraclize-api/usingOraclize.sol";
 
 contract BdbAdapter is usingOraclize {
     address public owner;
-    enum stageType {outputs, asset}
+    uint256 public minCount;
 
     struct pendingOperation {
-        stageType stage;
         address receiver;
         uint256 amount;
     }
@@ -36,13 +35,13 @@ contract BdbAdapter is usingOraclize {
     event newAssetQuery(string assetQuery);
     event newAssetResult(string assetResult);
     event newOutputQuery(string outputQuery);
-    event newOutputResult(string outputResult);
+    event newOutputResult(uint256 outputResult);
     event nodeUrlChanged(string apiUrl);
 
-    constructor(string apiUrlValue) public {
+    constructor(string apiUrlValue, uint256 minCountValid) public {
         // set _owner
         owner = msg.sender;
-
+        minCount = minCountValid;
         // set BigchainDB node url
         apiUrl = apiUrlValue;
     }
@@ -69,34 +68,20 @@ contract BdbAdapter is usingOraclize {
         string memory  query = strConcat(query1, DateTo, _bigchaindbOwner, apiClose);
         emit newAssetQuery(query);
         bytes32 id = oraclize_query("URL", query);
-        pendingOperations[id] = pendingOperation(stageType.outputs, _receiver, _amount);
+        pendingOperations[id] = pendingOperation(_receiver, _amount);
     }
 
-    // // Query from asset - internal
-    // function asset(string _bdbAssetId, address _receiver, uint256 _amount) internal {
-    //     string memory query = strConcat(apiStart, apiUrl, apiAssetEndpoint, _bdbAssetId, apiAssetClose);
-    //     emit newOutputQuery(query);
-    //     bytes32 id = oraclize_query("URL", query);
-    //     pendingOperations[id] = pendingOperation(stageType.asset, _receiver, _amount);
-    // }
-
     // Result from oraclize
-    function __callback(bytes32 id, string result) public {
+    function __callback(bytes32 id, uint256 result) public {
         require(msg.sender == oraclize_cbAddress(), "Access Denied.");
         require(pendingOperations[id].amount > 0, "Not enough amount.");
 
-        stageType stage = pendingOperations[id].stage;
         address receiver = pendingOperations[id].receiver;
         uint256 amount = pendingOperations[id].amount;
 
-        // if(stage == stageType.outputs){
-        //     emit newOutputResult(result);
-        //     asset(result, receiver, amount);
-        // } else 
-        if(stage == stageType.asset){
-            emit newAssetResult(result);
-            receiver.transfer(amount);
-        }
+        // Result is a uint256 with the number of matches
+        require(result > minCount, "The events found in BigchainDB are not enough");
+        emit newOutputResult(result);
 
         delete pendingOperations[id];
     }

@@ -11,8 +11,8 @@ const bdbAdapter = new web3.eth.Contract(bdbAdapterInstance.abi, config.parsed.B
   from: config.parsed.FROMADDRESS
 });
 
-function sendPayment(bdbPublicKey, sendTo, sendAmount){
-  const encoded = bdbAdapter.methods.sendPayment(bdbPublicKey, sendTo, sendAmount).encodeABI()
+function sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo){
+  const encoded = bdbAdapter.methods.sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo).encodeABI()
   const tx = {
     to: config.parsed.BDBADAPTERADDRESS,
     gas: web3.utils.toHex(7000000),
@@ -25,7 +25,8 @@ function sendPayment(bdbPublicKey, sendTo, sendAmount){
 }
 
 // sendPayment(<public key of BDB asset owner>, <eth address of receiving>, <send ethereum amount>)
-sendPayment("3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr","0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716",100)
+sendPayment("3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr","0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716"
+,100, "08/08/2018", "09/10/2018")
 
 /*
 // get ether balance
