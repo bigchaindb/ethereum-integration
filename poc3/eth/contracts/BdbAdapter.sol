@@ -59,6 +59,8 @@ contract BdbAdapter is usingOraclize {
     function sendPayment(string _bigchaindbOwner, address _receiver, uint256 _amount, string DateFrom, string DateTo) public payable {
         // check msg.amount (needs to include payment + oracle gas)
         require(_amount < msg.value, "Not enough amount.");
+
+        // TODO: calculate gas and check if amount + gas > msg.value
         outputs(_bigchaindbOwner, _receiver, _amount, DateFrom, DateTo);
     }
 
@@ -73,16 +75,17 @@ contract BdbAdapter is usingOraclize {
 
     // Result from oraclize
     function __callback(bytes32 id, uint256 result) public {
+        // TODO: put checks for gas
+
         require(msg.sender == oraclize_cbAddress(), "Access Denied.");
         require(pendingOperations[id].amount > 0, "Not enough amount.");
+        require(result > minCount, "The events found in BigchainDB are not enough");
 
         address receiver = pendingOperations[id].receiver;
         uint256 amount = pendingOperations[id].amount;
+        receiver.transfer(amount);
 
-        // Result is a uint256 with the number of matches
-        require(result > minCount, "The events found in BigchainDB are not enough");
         emit newOutputResult(result);
-
         delete pendingOperations[id];
     }
 }
