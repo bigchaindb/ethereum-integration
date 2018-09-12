@@ -50,31 +50,27 @@ module.exports = {
         })
       }
       // SECONDARY: asset / metadata / spent-unspent
-      if (inputs.asset !== undefined) {
+      if (inputs.asset !== undefined || (inputs.sum !== undefined && inputs.sum.startsWith("asset"))) {
         pipeline.push({
           $lookup: {
             from: "assets",
             let: {
               id: "$id"
             },
-            pipeline: [
-              {
+            pipeline: [{
                 $match: {
                   $expr: {
-                      $eq: ["$id", "$$id"]
+                    $eq: ["$id", "$$id"]
                   }
                 }
               },
-              { $replaceRoot: { newRoot: "$data" } }
+              {
+                $replaceRoot: {
+                  newRoot: "$data"
+                }
+              }
             ],
             as: "asset"
-          }
-        })
-        pipeline.push({
-          $match: {
-            asset: {
-              $elemMatch: inputs.asset
-            }
           }
         })
         pipeline.push({
@@ -82,32 +78,33 @@ module.exports = {
             path: "$asset"
           }
         })
+        if (inputs.asset !== undefined) {
+          pipeline.push({
+            $match: inputs.asset
+          })
+        }
       }
-      if (inputs.metadata !== undefined) {
+      if (inputs.metadata !== undefined || (inputs.sum !== undefined && inputs.sum.startsWith("metadata"))) {
         pipeline.push({
           $lookup: {
             from: "metadata",
             let: {
               id: "$id"
             },
-            pipeline: [
-              {
+            pipeline: [{
                 $match: {
                   $expr: {
-                      $eq: ["$id", "$$id"]
+                    $eq: ["$id", "$$id"]
                   }
                 }
               },
-              { $replaceRoot: { newRoot: "$metadata" } }
+              {
+                $replaceRoot: {
+                  newRoot: "$metadata"
+                }
+              }
             ],
             as: "metadata"
-          }
-        })
-        pipeline.push({
-          $match: {
-            metadata: {
-              $elemMatch: inputs.metadata
-            }
           }
         })
         pipeline.push({
@@ -115,6 +112,11 @@ module.exports = {
             path: "$metadata"
           }
         })
+        if (inputs.metadata !== undefined) {
+          pipeline.push({
+            $match: inputs.metadata
+          })
+        }
       }
       if (inputs.spent !== undefined) {
         pipeline.push({
@@ -172,6 +174,21 @@ module.exports = {
             }
           })
         }
+      }
+      if (inputs.count !== undefined) {
+        pipeline.push({
+          $count: "count"
+        })
+      }
+      if (inputs.sum !== undefined) {
+        pipeline.push({
+          $group: {
+            _id : null,
+            sum: {
+              $sum: "$"+inputs.sum
+            }
+          }
+        })
       }
 
       const transactions = await db.collection("transactions").aggregate(pipeline).toArray()

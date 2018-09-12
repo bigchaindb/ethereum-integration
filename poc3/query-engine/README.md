@@ -26,16 +26,24 @@ Filter transactions by spent or unspent status
 - `spent: true`
 - `spent: false`
 
-Filter transactions by asset object
-- `asset: { keyname: "value" }`
+Filter transactions by asset data with mongodb operators
+- `asset: { "asset.keyname": "value" }`
+- `asset: { "asset.keyname": { $gt: 4, $lt: 6 } }`
 
-Filter transactions by metadata object
-- `metadata: { keyname: "value" }`
+Filter transactions by metadata with mongodb operators
+- `metadata: { "metadata.keyname": "value" }`
+
+Count transactions after all the filtering
+- `count: true`
+
+Get sum of variables after all filtering
+- `sum: "asset.keyname"`
+- `sum: "metadata.keyname"`
 
 Example:
 `{
   assetid: "ea115210c9b41fb2f47aa587dfe0763fac2da225c43319afc28a64d740e289d1",
   fullfill: "5cbZpSZiojZKbmoiyxZtp3mnMbyt3vgxz4k8QnzcH3qX",
   spent: false,
-  metadata: { super: "transfer" }
+  metadata: { "metadata.keyname": "value" }`
 }`
