@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({
 // define routes
 app.use('/query', QueryRouter)
 // listen
-const server = app.listen(4000)
+const server = app.listen(config.parsed.PORT_APP)
 
 // export server
 module.exports = server

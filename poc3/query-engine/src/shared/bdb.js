@@ -84,7 +84,7 @@ module.exports = {
       // check if connection object exist
       if (!this.conn) {
           // init new connection object
-          this.conn = new driver.Connection("http://"+config.parsed.HOST_BIGCHAINDB+":9984/api/v1/")
+          this.conn = new driver.Connection(config.parsed.URL_BIGCHAINDB)
       }
   }
 

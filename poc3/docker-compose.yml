@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+
+  api:
+    build:
+      context: ./query-engine
+      dockerfile: ./Dockerfile
+    ports:
+      - "4000:4000"
+    command: npm run start

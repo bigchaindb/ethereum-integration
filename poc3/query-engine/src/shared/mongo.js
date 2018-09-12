@@ -50,7 +50,6 @@ module.exports = {
         })
       }
       // SECONDARY: asset / metadata / spent-unspent
-      let secondaryMatch = {}
       if (inputs.asset !== undefined) {
         pipeline.push({
           $lookup: {
@@ -171,7 +170,7 @@ module.exports = {
       return transactions
     },
 
-    connect: function(url = "mongodb://"+config.parsed.HOST_MONGO+":27017/bigchain") {
+    connect: function(url = `mongodb://${config.parsed.HOST_MONGO}:${config.parsed.PORT_MONGO}/bigchain`) {
       return new Promise((resolve, reject) => {
         MongoClient.connect(url, {
           useNewUrlParser: true
