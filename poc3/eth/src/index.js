@@ -15,7 +15,7 @@ function sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo){
   const encoded = bdbAdapter.methods.sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo).encodeABI()
   const tx = {
     to: config.parsed.BDBADAPTERADDRESS,
-    gas: web3.utils.toHex(7000000),
+    gas: web3.utils.toHex(6993349),
     value: web3.utils.toHex(sendAmount+parseInt(config.parsed.ORACLEGAS)),
     data: encoded
   }
