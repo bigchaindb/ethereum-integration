@@ -77,6 +77,11 @@ module.exports = {
             }
           }
         })
+        pipeline.push({
+          $unwind: {
+            path: "$asset"
+          }
+        })
       }
       if (inputs.metadata !== undefined) {
         pipeline.push({
@@ -103,6 +108,11 @@ module.exports = {
             metadata: {
               $elemMatch: inputs.metadata
             }
+          }
+        })
+        pipeline.push({
+          $unwind: {
+            path: "$metadata"
           }
         })
       }
