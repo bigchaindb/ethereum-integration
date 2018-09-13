@@ -1,6 +1,6 @@
 # Quickstart #
 
-### Install requiremens ###
+### Install requirements ###
 - Install nodejs
 - Install npm packages with `npm install`
 - Install contracts with `truffle install`
@@ -17,3 +17,12 @@
 
 ### Execute transfer ###
 - Run transfer with `npm run start`
+
+### Test
+
+The test deploys the contract on the Rinkeby network, executes the oraclize query and listens to the events to track the progress of the query.
+
+#### To execute the test:
+- Modify the `test/TestParam.json` as per the requirement.
+- Make sure the `from_address` mentioned in the `test/TestParam.json` is unlocked during the test execution and has sufficient funds. Since this account is going to be used for contract deployment and transaction execution.
+- From command line/terminal run: `truffle test`.
