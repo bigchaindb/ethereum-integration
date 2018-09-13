@@ -20,7 +20,7 @@ Get transactions by assetid or multiple asset ids:
 - `assetid: ["transaction_assetId1","transaction_assetId2",...]`
 
 Get transactions with output owned by publicKey
-- `fullfill: "publicKey"`
+- `publickey: "publicKey"`
 
 Filter transactions by spent or unspent status
 - `spent: true`

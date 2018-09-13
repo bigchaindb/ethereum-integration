@@ -23,9 +23,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
   next()
 });
-if (process.env.NODE_ENV !== 'test') {
-  app.use(logger('dev'));
-}
+app.use(logger('dev'));
 app.use(compression())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({

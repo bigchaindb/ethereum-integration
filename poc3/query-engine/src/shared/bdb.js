@@ -49,7 +49,7 @@ module.exports = {
       const txSigned = driver.Transaction.signTransaction(transaction, keypair.privateKey)
 
       // send transaction in commit mode, return it when commited to BDB
-      return await this.conn.postTransactionCommit(txSigned)
+      return await this.conn.postTransactionAsync(txSigned)
           .then(retrievedTx => {
               return retrievedTx
           })
@@ -70,7 +70,7 @@ module.exports = {
 
       const txSigned = driver.Transaction.signTransaction(txTransfer, fromKeyPair.privateKey)
       let trTx
-      await this.conn.postTransactionCommit(txSigned)
+      await this.conn.postTransactionAsync(txSigned)
           .then(retrievedTx => {
               trTx = retrievedTx
           })

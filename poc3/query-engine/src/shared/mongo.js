@@ -37,10 +37,10 @@ module.exports = {
           $in: assetids
         }
       }
-      if (inputs.fullfill !== undefined) {
+      if (inputs.publickey !== undefined) {
         primaryMatch.outputs = {
           $elemMatch: {
-            public_keys: inputs.fullfill
+            public_keys: inputs.publickey
           }
         }
       }

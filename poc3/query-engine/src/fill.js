@@ -1,26 +1,44 @@
 const bdb = require("./shared/bdb")
 
-const keypair1 = bdb.getKeypairFromSeed("keypair1")
-const keypair2 = bdb.getKeypairFromSeed("keypair2")
-const keypair3 = bdb.getKeypairFromSeed("keypair3")
+const keypairPlatform = bdb.getKeypairFromSeed("platform")
+const keypairUser1 = bdb.getKeypairFromSeed("user1")
+const keypairUser2 = bdb.getKeypairFromSeed("user2")
+const keypairUser3 = bdb.getKeypairFromSeed("user3")
+const keypairUser4 = bdb.getKeypairFromSeed("user4")
+const keypairUser5 = bdb.getKeypairFromSeed("user5")
+
+function getDates(startDate, endDate) {
+  var dates = [],
+      currentDate = startDate,
+      addDays = function(days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+      };
+  while (currentDate <= endDate) {
+    dates.push(currentDate);
+    currentDate = addDays.call(currentDate, 1);
+  }
+  return dates;
+};
 
 
 async function fill(){
 
-  // create
-  const tx1 = await bdb.createNewAsset(keypair1, keypair1.publicKey, {assetdata:"asset1", value:1}, {metadata:"meta1"})
-  const tx2 = await bdb.createNewAsset(keypair2, keypair2.publicKey, {assetdata:"asset2", value:2}, {metadata:"meta2"})
-  const tx3 = await bdb.createNewAsset(keypair2, keypair2.publicKey, {assetdata:"asset3", value:3}, {metadata:"meta3"})
-  const tx4 = await bdb.createNewAsset(keypair3, keypair3.publicKey, {assetdata:"asset4", value:4}, {metadata:"meta4"})
-  const tx5 = await bdb.createNewAsset(keypair3, keypair3.publicKey, {assetdata:"asset5", value:5}, {metadata:"meta5"})
-  const tx6 = await bdb.createNewAsset(keypair3, keypair3.publicKey, {assetdata:"asset6", value:6}, {metadata:"meta6"})
-  const tx7 = await bdb.createNewAsset(keypair1, keypair3.publicKey, {assetdata:"asset1", value:1}, {metadata:"meta1"})
-  const tx8 = await bdb.createNewAsset(keypair1, keypair2.publicKey, {assetdata:"asset2", value:2}, {metadata:"meta2"})
-  const tx9 = await bdb.createNewAsset(keypair2, keypair1.publicKey, {assetdata:"asset3", value:3}, {metadata:"meta3"})
-  // transfer some
-  bdb.transferAsset(tx7, keypair3, keypair1.publicKey, {metadata:"meta21"});
-  bdb.transferAsset(tx8, keypair2, keypair2.publicKey, {metadata:"meta22"});
-  bdb.transferAsset(tx9, keypair1, keypair2.publicKey, {metadata:"meta23"});
+  const dates = getDates(new Date(2015,01,01), new Date(2018,12,31));
+  // for each day
+  for (const date of dates) {
+      bdb.createNewAsset(keypairUser1, keypairPlatform.publicKey, {type:"scan", timestamp: new Date(date).getTime()}, null);
+      bdb.createNewAsset(keypairUser2, keypairPlatform.publicKey, {type:"scan", timestamp: new Date(date).getTime()}, null);
+      bdb.createNewAsset(keypairUser3, keypairPlatform.publicKey, {type:"scan", timestamp: new Date(date).getTime()}, null);
+      bdb.createNewAsset(keypairUser4, keypairPlatform.publicKey, {type:"scan", timestamp: new Date(date).getTime()}, null);
+      bdb.createNewAsset(keypairUser5, keypairPlatform.publicKey, {type:"scan", timestamp: new Date(date).getTime()}, null);
+  }
 }
 
 fill()
+
+/*
+console.log(new Date("2016,01,01").getTime())
+console.log(new Date("2017,12,31").getTime())
+*/
