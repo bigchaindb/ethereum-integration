@@ -11,5 +11,6 @@ RUN apt-get install -y nodejs
 WORKDIR /query_engine
 
 COPY  . .
+COPY  ./.env-example .
 
 RUN npm install
