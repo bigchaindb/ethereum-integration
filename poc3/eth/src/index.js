@@ -20,13 +20,17 @@ function sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo){
     data: encoded
   }
   web3.eth.accounts.signTransaction(tx, "0x"+config.parsed.FROMADDRESSPRIVKEY).then(signed => {
-    web3.eth.sendSignedTransaction(signed.rawTransaction);
+    web3.eth.sendSignedTransaction(signed.rawTransaction)
+    .once('transactionHash', function(hash){console.log(['transferToStaging Trx Hash:' + hash]);})
+                .once('receipt', function(receipt){console.log(['transferToStaging Receipt:', receipt]);})
+                .on('confirmation', function (confirmationNumber){console.log('transferToStaging confirmation: ' + confirmationNumber);})
+                .on('error', console.error);
   });
 }
 
 // sendPayment(<public key of BDB asset owner>, <eth address of receiving>, <send ethereum amount>)
 sendPayment("3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr","0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716"
-,100, "08/08/2018", "09/10/2018")
+,50, "08/08/2018", "09/10/2018")
 
 /*
 // get ether balance

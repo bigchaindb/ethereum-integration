@@ -4,6 +4,7 @@ const config = require("dotenv").config();
 const mnemonic = config.parsed.MNEMONIC;
 const infuraKey = config.parsed.INFURAKEY;
 const url = `https://rinkeby.infura.io/v3/${infuraKey}`;
+//const url = `https://ropsten.infura.io/v3/${infuraKey}`;
 const fromAddress = config.parsed.FROMADDRESS;
 
 module.exports = {
@@ -17,6 +18,13 @@ module.exports = {
       provider: () => new HDWalletProvider(mnemonic, url),
       network_id: '4', // rinkeby
       from: fromAddress
-    }
+    },
+    ropsten: {
+      provider: function() {
+        return new HDWalletProvider(mnemonic, url)
+      },
+      network_id: 3,
+      from: fromAddress
+    }   
   }
 };

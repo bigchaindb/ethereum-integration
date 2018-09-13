@@ -4,7 +4,6 @@ const hdkey = require('ethereumjs-wallet/hdkey');
 const mnemonic = bip39.generateMnemonic();
 const seed = bip39.mnemonicToSeed(mnemonic)
 const hdwallet = hdkey.fromMasterSeed(seed);
-const masterPrivateKey = root.privateKey.toString('hex');
 
 // Public addresses
 console.log(`Accounts:`)
