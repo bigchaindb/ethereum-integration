@@ -40,7 +40,7 @@ const transferTokens = async function (passphrase, assetId, amount, toPublicKey,
     _getConnection()
 
     const metadata = {
-        event: 'Token Transfer',
+        event: 'BDB Token Transfer',
         date: new Date(),
         timestamp: Date.now()
     }
