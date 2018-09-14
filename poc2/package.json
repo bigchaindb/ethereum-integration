@@ -16,7 +16,7 @@
     "bigchaindb",
     "blockchain"
   ],
-  "author": "Shubhendu Shekhar",
+  "author": "dev@bigchaindb.com",
   "license": "Apache-2.0",
   "dependencies": {
     "bigchaindb-driver": "4.1.0",
