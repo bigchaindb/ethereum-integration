@@ -8,6 +8,7 @@
     }
   },
   "ethereum":{
-    "host":"http://192.168.86.245:8545"
+    "host":"http://192.168.86.245:8545",
+    "fromAddress": "0x3cf3a1d91c8628d33aaf5184ced04c55c437a0df"
   }
 }
