@@ -25,8 +25,6 @@ contract BdbAdapter is usingOraclize {
 
     // bigchaindb API query components
     string constant public apiStart = "json(";
-    string constant public apiOutputsEndpoint = "/api/v1/outputs?spent=false&public_key=";
-    string constant public apiOutputsClose = ").0.output_index";
     string constant public apiAssetEndpoint = "/api/v1/transactions/";
     string constant public apiAssetClose = ").asset.data.address";
 

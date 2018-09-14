@@ -1,7 +1,7 @@
 {
     "bigchaindb": {
         "host": "https://test.bigchaindb.com",
-        "assetId": "",
+        "assetId": "4e330659396885497dadb8872e73d6b59b1aed178a291c04de952a5cba107054",
         "expected_value": "109006 Burgos"
     },
     "ethereum": {
