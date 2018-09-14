@@ -9,16 +9,16 @@ export const sendLocation = (truck, location) => {
     let privKey = env.bdb[truck + "PrivKey"];
     // Construct a transaction payload
     const tx = driver.Transaction.makeCreateTransaction(
-        location,
-        { lastModifiedOn: Date()},
-        [ driver.Transaction.makeOutput(
-                driver.Transaction.makeEd25519Condition(pubKey))
-        ],
+        location, {
+            timestamp: new Date()
+        },
+        [driver.Transaction.makeOutput(
+            driver.Transaction.makeEd25519Condition(pubKey))],
         pubKey
     )
 
     // Sign the transaction with private keys
-    const txSigned = driver.Transaction.signTransaction(tx,privKey)
+    const txSigned = driver.Transaction.signTransaction(tx, privKey)
 
     // Send the transaction off to BigchainDB
     const conn = new driver.Connection(API_PATH, {
@@ -27,6 +27,5 @@ export const sendLocation = (truck, location) => {
     });
 
     conn.postTransactionCommit(txSigned)
-        .then(retrievedTx => console.log(truck + ' successfully send its current location ('+ location.latitude +','
-        + location.longitude +') to BigchainDB with tx id ', retrievedTx.id))
+        .then(retrievedTx => console.log(truck + ' successfully sent its current address to BigchainDB with tx id ', retrievedTx.id))
 }

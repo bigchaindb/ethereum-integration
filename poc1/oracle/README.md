@@ -26,3 +26,7 @@ The test deploys the contract on the Rinkeby network, executes the oraclize quer
 - Modify the `test/TestParam.json` as per the requirement.
 - Make sure the `from_address` mentioned in the `test/TestParam.json` is unlocked during the test execution and has sufficient funds. Since this account is going to be used for contract deployment and transaction execution.
 - From command line/terminal run: `truffle test`.
+
+
+###
+The latitude and longitude are stored multiplied by 1000000 (a million)
