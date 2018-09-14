@@ -27,5 +27,5 @@ export const sendLocation = (truck, location) => {
     });
 
     conn.postTransactionCommit(txSigned)
-        .then(retrievedTx => console.log(truck + ' successfully send its current address to BigchainDB with tx id ', retrievedTx.id))
+        .then(retrievedTx => console.log(truck + ' successfully sent its current address to BigchainDB with tx id ', retrievedTx.id))
 }
