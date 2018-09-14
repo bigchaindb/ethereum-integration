@@ -21,7 +21,7 @@ contract BdbAdapter is usingOraclize {
 
     // bigchaindb node url
     string public apiUrl = "https://test.bigchaindb.com";
-    string public locationAddress = "Av. de Castilla y León, 109006 Burgos";
+    string public locationAddress = "109006 Burgos";
 
     // bigchaindb API query components
     string constant public apiStart = "json(";
@@ -33,6 +33,8 @@ contract BdbAdapter is usingOraclize {
     // events
     event newOutputResult(string outputResult);
     event queryParametersChanged(string apiUrl, string locationAddress);
+    event addressMatch(string location);
+    event addressMismatch(string location);
 
     constructor(string _apiUrlValue, string _locationAddress) public {
         // set _owner
@@ -78,7 +80,10 @@ contract BdbAdapter is usingOraclize {
         uint256 amount = pendingOperations[id].amount;
 
         if(keccak256(locationAddress) == keccak256(stringResult)){
+            emit addressMatch(locationAddress);
             receiver.transfer(amount);
+        } else {
+            emit addressMismatch(stringResult);
         }
 
         delete pendingOperations[id];
