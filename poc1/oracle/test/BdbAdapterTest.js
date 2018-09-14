@@ -7,12 +7,13 @@ var web3 = new Web3(new Web3.providers.HttpProvider(testparams.ethereum.host));
 
 contract('BigchainDB Adapter Contract Test', () => {
     describe('End-To-End POC1 Oraclize Test', async () => {
-        it('Should log new output result event ', async () => {
+        it('Should log new output result event and balance should be updated', async () => {
             const {
                 contract
             } = await BdbAdapter.deployed();
             const expected = testparams.bigchaindb.expected_value;
-            const balance = web3.eth.getBalance(testparams.ethereum.to_address);
+            let balance = 0;
+            web3.eth.getBalance(testparams.ethereum.to_address).then(result => {balance = result});
             contract.sendPayment(testparams.bigchaindb.assetId, testparams.ethereum.to_address, testparams.ethereum.amount, {
                 from: testparams.ethereum.from_address,
                 gas: testparams.ethereum.gas,
@@ -25,9 +26,12 @@ contract('BigchainDB Adapter Contract Test', () => {
                 fromBlock: 0,
                 toBlock: 'latest'
             }));
-            const newBalance = web3.eth.getBalance(testparams.ethereum.to_address);
-            assert.equal(outputResult, expected);
-            assert.equal(newBalance, balance + testparams.ethereum.amount);
+            
+            web3.eth.getBalance(testparams.ethereum.to_address).then(newBalance => {
+                assert.equal(outputResult, expected);
+                assert.equal(newBalance, balance + testparams.ethereum.amount);
+            });
+            
         });
     })
 });
