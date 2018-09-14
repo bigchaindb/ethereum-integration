@@ -2,7 +2,7 @@
     "bigchaindb": {
         "host": "https://test.bigchaindb.com",
         "assetId": "",
-        "expected_value": "Av. de Castilla y León, 109006 Burgos"
+        "expected_value": "109006 Burgos"
     },
     "ethereum": {
         "host": "http://localhost:8545",
