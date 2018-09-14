@@ -4,7 +4,7 @@ const Tx = require('ethereumjs-tx');
 
 const config = require("dotenv").config();
 
-const web3 = new Web3(`https://rinkeby.infura.io/v3/${config.parsed.INFURAKEY}`);
+const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
 const bdbAdapterInstance = require("../build/contracts/BdbAdapter.json");
 const bdbAdapter = new web3.eth.Contract(bdbAdapterInstance.abi, config.parsed.BDBADAPTERADDRESS, {
@@ -15,8 +15,9 @@ function sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo){
   const encoded = bdbAdapter.methods.sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo).encodeABI()
   const tx = {
     to: config.parsed.BDBADAPTERADDRESS,
-    gas: web3.utils.toHex(7000000),
-    value: web3.utils.toHex(sendAmount+parseInt(config.parsed.ORACLEGAS)),
+    gas: web3.utils.toHex(web3.utils.toWei("0.001","gwei")),
+    gasPrice: web3.utils.toHex(web3.utils.toWei("22000","wei")),
+    value: web3.utils.toHex(web3.utils.toWei("0.012","ether")),//+parseInt(config.parsed.ORACLEGAS)
     data: encoded
   }
   web3.eth.accounts.signTransaction(tx, "0x"+config.parsed.FROMADDRESSPRIVKEY).then(signed => {
@@ -24,9 +25,17 @@ function sendPayment(bdbPublicKey, sendTo, sendAmount, dateFrom, dateTo){
   });
 }
 
+web3.eth.getBalance(config.parsed.FROMADDRESS).then((data) => {
+  console.log("ether balance: ",data);
+});
+
+const from = new Date("2015,02,06").getTime().toString();
+const to = new Date("2017,12,30").getTime().toString();
+const amount = web3.utils.toWei("0.01","ether");
 // sendPayment(<public key of BDB asset owner>, <eth address of receiving>, <send ethereum amount>)
-sendPayment("3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr","0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716"
-,100, "08/08/2018", "09/10/2018")
+sendPayment("HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert","0xc75aa08c2fBf9EC7580650d8dc74BFb12a5Cd343"
+,amount,from, to)
+
 
 /*
 // get ether balance
