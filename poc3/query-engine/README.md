@@ -40,10 +40,21 @@ Get sum of variables after all filtering
 - `sum: "asset.keyname"`
 - `sum: "metadata.keyname"`
 
-Example:
+Example of getting all transactions with assetid that are owned by publickey are not spent and have in metadata "keyname" with value "value".
 `{
   assetid: "ea115210c9b41fb2f47aa587dfe0763fac2da225c43319afc28a64d740e289d1",
-  fullfill: "5cbZpSZiojZKbmoiyxZtp3mnMbyt3vgxz4k8QnzcH3qX",
+  publickey: "5cbZpSZiojZKbmoiyxZtp3mnMbyt3vgxz4k8QnzcH3qX",
   spent: false,
   metadata: { "metadata.keyname": "value" }`
 }`
+
+Example of getting count of transactions that are owned by publickey have type:"scan" and timestamp greater then 1451602800000 and lower then 1514674800000.
+`{
+	"publickey": "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert",
+	"asset": {
+		"asset.type": "scan",
+		"asset.timestamp": {"$gte":1451602800000, "$lte":1514674800000}
+	},
+	"count": true
+}`
+
