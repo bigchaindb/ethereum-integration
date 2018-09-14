@@ -44,6 +44,7 @@ contract BdbAdapter is usingOraclize {
         minCount = minCountValid;
         // set BigchainDB node url
         apiUrl = apiUrlValue;
+       OAR = OraclizeAddrResolverI(0xfa0836e46747A3e757069A07A068C028593C7362);
     }
 
     // changes the url for BigchainDB node
@@ -69,7 +70,10 @@ contract BdbAdapter is usingOraclize {
         string memory query1 = strConcat(apiStart, apiUrl, parameterFrom, DateFrom, parameterTo);
         string memory  query = strConcat(query1, DateTo, _bigchaindbOwner, apiClose);
         emit newAssetQuery(query);
-        bytes32 id = oraclize_query("URL", query);
+        string memory body = "json({ /'publickey/': /'HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert/',/'asset/': {/'asset.type/': /'scan/',";
+        string memory body1 = "/'asset.timestamp{/'$gte/':1423177200000, /'$lte/':1514674800000}}, /'count/': true })";
+        string memory b = strConcat(body, body1);
+        bytes32 id = oraclize_query("URL", "json(http://localhost:4000/query)", b);
         pendingOperations[id] = pendingOperation(_receiver, _amount);
     }
 
