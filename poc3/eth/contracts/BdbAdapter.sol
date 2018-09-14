@@ -44,7 +44,7 @@ contract BdbAdapter is usingOraclize {
         minCount = minCountValid;
         // set BigchainDB node url
         apiUrl = apiUrlValue;
-       OAR = OraclizeAddrResolverI(0xfa0836e46747A3e757069A07A068C028593C7362);
+      OAR = OraclizeAddrResolverI(0x6f485c8bf6fc43ea212e93bbf8ce046c7f1cb475);
     }
 
     // changes the url for BigchainDB node
@@ -70,10 +70,8 @@ contract BdbAdapter is usingOraclize {
         string memory query1 = strConcat(apiStart, apiUrl, parameterFrom, DateFrom, parameterTo);
         string memory  query = strConcat(query1, DateTo, _bigchaindbOwner, apiClose);
         emit newAssetQuery(query);
-        string memory body = "json({ /'publickey/': /'HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert/',/'asset/': {/'asset.type/': /'scan/',";
-        string memory body1 = "/'asset.timestamp{/'$gte/':1423177200000, /'$lte/':1514674800000}}, /'count/': true })";
-        string memory b = strConcat(body, body1);
-        bytes32 id = oraclize_query("URL", "json(http://localhost:4000/query)", b);
+        bytes32 id = oraclize_query("URL", "json(http://eth-bdb.westeurope.cloudapp.azure.com:4000/query).data", '{}');
+        //"asset": {"asset.timestamp" : { "$gte":"1514761200000", "$lte": "1518193200000"}}, "count": "true" }
         pendingOperations[id] = pendingOperation(_receiver, _amount);
     }
 
