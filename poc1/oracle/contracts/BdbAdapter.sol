@@ -33,8 +33,8 @@ contract BdbAdapter is usingOraclize {
     // events
     event newOutputResult(string outputResult);
     event queryParametersChanged(string apiUrl, string locationAddress);
-    event addressMatch(string location);
-    event addressMismatch(string location);
+    event addressMatch(string location, string expected);
+    event addressMismatch(string location, string expected);
 
     constructor(string _apiUrlValue, string _locationAddress) public {
         // set _owner
@@ -80,10 +80,10 @@ contract BdbAdapter is usingOraclize {
         uint256 amount = pendingOperations[id].amount;
 
         if(keccak256(locationAddress) == keccak256(stringResult)){
-            emit addressMatch(locationAddress);
+            emit addressMatch(locationAddress, stringResult);
             receiver.transfer(amount);
         } else {
-            emit addressMismatch(stringResult);
+            emit addressMismatch(locationAddress, stringResult);
         }
 
         delete pendingOperations[id];
