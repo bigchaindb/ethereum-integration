@@ -1,11 +1,11 @@
 {
     "bigchaindb": {
         "host": "https://test.bigchaindb.com",
-        "public_key": "3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr",
-        "expected_tx": "cc5f6d7ce4ea57b59f51ac14fe6e17632134aaf6469fab3713c7e92dc6d2fb94",
-        "expected_asset_data": "{\"latitude\": 52.55437486666666, \"createdOn\": \"Thu Sep 06 2018 14:17:00 GMT+0200 (Central European Summer Time)\", \"longitude\": 13.29124493333333}"
+        "assetId": "4e330659396885497dadb8872e73d6b59b1aed178a291c04de952a5cba107054",
+        "expected_value": "109006 Burgos"
     },
     "ethereum": {
+        "host": "http://localhost:8545",
         "from_address": "0x1bc887ca181eb3d4fa59e6c74d826f74f99e45fa",
         "to_address": "0x7474ca533d8a5162a044b090f7f01003d1868b4b",
         "amount": 100,
