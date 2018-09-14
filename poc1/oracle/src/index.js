@@ -11,8 +11,8 @@ const bdbAdapter = new web3.eth.Contract(bdbAdapterInstance.abi, config.parsed.B
   from: config.parsed.FROMADDRESS
 });
 
-function sendPayment(bdbPublicKey, sendTo, sendAmount){
-  const encoded = bdbAdapter.methods.sendPayment(bdbPublicKey, sendTo, sendAmount).encodeABI()
+function sendPayment(txId, sendTo, sendAmount, latitude, longitude){
+  const encoded = bdbAdapter.methods.sendPayment(txId, sendTo, sendAmount, latitude, longitude).encodeABI()
   const tx = {
     to: config.parsed.BDBADAPTERADDRESS,
     gas: web3.utils.toHex(7000000),
@@ -20,12 +20,17 @@ function sendPayment(bdbPublicKey, sendTo, sendAmount){
     data: encoded
   }
   web3.eth.accounts.signTransaction(tx, "0x"+config.parsed.FROMADDRESSPRIVKEY).then(signed => {
-    web3.eth.sendSignedTransaction(signed.rawTransaction);
+    web3.eth.sendSignedTransaction(signed.rawTransaction)
+    .once('transactionHash', function(hash){console.log(['transferToStaging Trx Hash:' + hash]);})
+                .once('receipt', function(receipt){console.log(['transferToStaging Receipt:', receipt]);})
+                .on('confirmation', function (confirmationNumber){console.log('transferToStaging confirmation: ' + confirmationNumber);})
+                .on('error', console.error);
   });
 }
 
 // sendPayment(<public key of BDB asset owner>, <eth address of receiving>, <send ethereum amount>)
-sendPayment("3gep1cRMHdB1ri6ohHdsHRJ4xPyYsyFMnE6cj83NNjpr","0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716",100)
+sendPayment("e5aed1b0e31ab0b41b2647b49d3a106adb56146a85853390979357648d9c673f","0x0408f7f82745fdcec2bdc9bdaae8e32795a0c716"
+    , 100, 52535316, 13356172)
 
 /*
 // get ether balance
