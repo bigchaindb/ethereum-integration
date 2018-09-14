@@ -6,6 +6,8 @@ services:
     build:
       context: ./query-engine
       dockerfile: ./Dockerfile
+    depends_on:
+      - mongodb
     ports:
       - "4000:4000"
     command: npm run start
