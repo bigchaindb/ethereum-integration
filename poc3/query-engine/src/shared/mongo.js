@@ -190,6 +190,23 @@ module.exports = {
           }
         })
       }
+      // default paging
+      let perPage = 1000;
+      if (inputs.perPage !== undefined) {
+        perPage = inputs.perPage;
+      }
+      let page = 0
+      if (inputs.page !== undefined) {
+        page = inputs.page;
+      }
+      if (page > 0) {
+        pipeline.push({
+          $skip: inputs.page * perPage
+        })
+      }
+      pipeline.push({
+        $limit: perPage
+      })
 
       const transactions = await db.collection("transactions").aggregate(pipeline).toArray()
 

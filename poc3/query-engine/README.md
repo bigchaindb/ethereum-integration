@@ -40,6 +40,12 @@ Get sum of variables after all filtering
 - `sum: "asset.keyname"`
 - `sum: "metadata.keyname"`
 
+Paginated results
+- `page: 0`
+- `perPage: 100`
+
+*Note: Default limit per results is 1000*
+
 ### Examples ###
 
 #### 1. Get transaction with id.####
