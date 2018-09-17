@@ -42,7 +42,56 @@ Get sum of variables after all filtering
 
 ### Examples ###
 
-Get transaction with id and have metadata "keyname" with value "value".
+#### 1. Get transaction with id.####
+
+Send POST request to /query endpoint with JSON body:
+
+```json
+{
+  id: "ea115210c9b41fb2f47aa587dfe0763fac2da225c43319afc28a64d740e289d1"
+}
+```
+
+Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "_id": "5b9a6ca45d15b40008724ab5",
+            "id": "ea115210c9b41fb2f47aa587dfe0763fac2da225c43319afc28a64d740e289d1",
+            "operation": "CREATE",
+            "outputs": [
+                {
+                    "condition": {
+                        "details": {
+                            "type": "ed25519-sha-256",
+                            "public_key": "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert"
+                        },
+                        "uri": "ni:///sha-256;nlTm4pyKkNoDaqYvOH_OroiZBnnTUshR3KZDNiG3rQ4?fpt=ed25519-sha-256&cost=131072"
+                    },
+                    "amount": "1",
+                    "public_keys": [
+                        "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert"
+                    ]
+                }
+            ],
+            "inputs": [
+                {
+                    "fulfillment": "pGSAILeDCuT7jqYFcCJn3Jj1RUDjhVZ1Cz5-KRBxYmpc87UugUAyplQj46O_xCDNJzhTj8Wndn48fuVtCW7DqJALwuky7ZGNSrQ8J1WBe2yd30g2C30zvn6YkINr8iyW1UxDZRcC",
+                    "fulfills": null,
+                    "owners_before": [
+                        "DMMWCQjoG8PHd8JvkrPraRZs7b26FG25gcnNnt7sVybT"
+                    ]
+                }
+            ],
+            "version": "2.0"
+        }
+    ]
+}
+```
+
+#### 2. Get transaction with id and have metadata object "keyname" with value "value".####
 
 Send POST request to /query endpoint with JSON body:
 
@@ -95,7 +144,60 @@ Response:
 }
 ```
 
-Getting count of transactions that are owned by publickey have type:"scan" and timestamp greater then 1451602800000 and lower then 1514674800000.
+#### 3. Get transaction with id and asset with object "assetkey" with value "assetvalue" ####
+
+Send POST request to /query endpoint with JSON body:
+
+```json
+{
+  id: "ea115210c9b41fb2f47aa587dfe0763fac2da225c43319afc28a64d740e289d1",
+  asset: { "asset.assetkey": "assetvalue" }
+}
+```
+
+Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "_id": "5b9a6ca45d15b40008724ab5",
+            "id": "ea115210c9b41fb2f47aa587dfe0763fac2da225c43319afc28a64d740e289d1",
+            "operation": "CREATE",
+            "outputs": [
+                {
+                    "condition": {
+                        "details": {
+                            "type": "ed25519-sha-256",
+                            "public_key": "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert"
+                        },
+                        "uri": "ni:///sha-256;nlTm4pyKkNoDaqYvOH_OroiZBnnTUshR3KZDNiG3rQ4?fpt=ed25519-sha-256&cost=131072"
+                    },
+                    "amount": "1",
+                    "public_keys": [
+                        "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert"
+                    ]
+                }
+            ],
+            "inputs": [
+                {
+                    "fulfillment": "pGSAILeDCuT7jqYFcCJn3Jj1RUDjhVZ1Cz5-KRBxYmpc87UugUAyplQj46O_xCDNJzhTj8Wndn48fuVtCW7DqJALwuky7ZGNSrQ8J1WBe2yd30g2C30zvn6YkINr8iyW1UxDZRcC",
+                    "fulfills": null,
+                    "owners_before": [
+                        "DMMWCQjoG8PHd8JvkrPraRZs7b26FG25gcnNnt7sVybT"
+                    ]
+                }
+            ],
+            "version": "2.0",
+            "asset": {
+                "assetkey": "assetvalue"
+            }
+        }
+    ]
+}
+```
+
+#### 4. Getting count of transactions that are owned by publickey and have asset timestamp between values.
 
 Send POST request to /query endpoint with JSON body:
 
@@ -103,7 +205,6 @@ Send POST request to /query endpoint with JSON body:
 {
 	"publickey": "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert",
 	"asset": {
-		"asset.type": "scan",
 		"asset.timestamp": {"$gte":1451602800000, "$lte":1514674800000}
 	},
 	"count": true
@@ -117,6 +218,32 @@ Response:
     "data": [
         {
             "count": 904
+        }
+    ]
+}
+```
+
+#### 5. Getting sum of values in transactions that are owned by publickey and have asset timestamp between values.
+
+Send POST request to /query endpoint with JSON body:
+
+```json
+{
+	"publickey": "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert",
+	"asset": {
+		"asset.timestamp": {"$gte":1451602800000, "$lte":1514674800000}
+	},
+	"sum": "asset.amount"
+}
+```
+
+Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "sum": 125599
         }
     ]
 }
