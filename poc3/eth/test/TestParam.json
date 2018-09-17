@@ -1,0 +1,16 @@
+{
+    "queryEngine": {
+        "expected_value": "1552"
+    },
+    "bigchaindb": {
+        "owner": "HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert"
+    },
+    "ethereum": {
+        "host": "http://localhost:8545",
+        "from_address": "0x4976955e777D83dBE15298ef86B5EcF4bdE422bC",
+        "to_address": "0xc75aa08c2fBf9EC7580650d8dc74BFb12a5Cd343",
+        "amount": 100,
+        "gas": 5000000,
+        "value": 10000000000000100
+    }
+}
