@@ -4,7 +4,7 @@ const Tx = require('ethereumjs-tx');
 
 const config = require("dotenv").config();
 
-const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:9545'));
 
 const bdbAdapterInstance = require("../build/contracts/BdbAdapter.json");
 const bdbAdapter = new web3.eth.Contract(bdbAdapterInstance.abi, config.parsed.BDBADAPTERADDRESS, {
@@ -36,14 +36,9 @@ const amount = web3.utils.toWei("0.01","ether");
 sendPayment("HAz6LuLNTpijaR5aJMdX5eBUDSaHzP9WJaJnbu3oGert","0xc75aa08c2fBf9EC7580650d8dc74BFb12a5Cd343"
 ,amount,from, to)
 
-
-/*
-// get ether balance
-web3.eth.getBalance(config.parsed.FROMADDRESS).then((data) => {
-  console.log("ether balance: ",data);
+bdbAdapter.events.allEvents(function(error, result){
+  if (!error)
+    console.log(result);
 });
-// get variable amount
-bdbAdapter.methods.amount().call()
-  .then(result => console.log("result", result))
-  .catch(error => console.log("error", error));
-*/
+
+
