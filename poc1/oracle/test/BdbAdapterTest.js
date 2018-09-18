@@ -7,7 +7,7 @@ var web3 = new Web3(new Web3.providers.HttpProvider(testparams.ethereum.host));
 
 contract('BigchainDB Adapter Contract Test', () => {
     describe('End-To-End POC1 Oraclize Test', async () => {
-        it('Should log new output result event and balance should be updated', async () => {
+        it('Should log new output result event and receiver balance should be updated', async () => {
             const {
                 contract
             } = await BdbAdapter.deployed();
