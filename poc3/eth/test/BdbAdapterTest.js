@@ -11,7 +11,7 @@ contract('BigchainDB Adapter Contract Test', () => {
             const {
                 contract
             } = await BdbAdapter.deployed();
-            const expected = new web3.utils.BN(testparams.queryEngine.expected_value);
+            const expected = testparams.queryEngine.expected_value;
             let balance = 0;
             web3.eth.getBalance(testparams.ethereum.to_address).then(result => {balance = result});
             contract.sendPayment(testparams.bigchaindb.owner, testparams.ethereum.to_address, testparams.ethereum.amount,"","", {
