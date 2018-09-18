@@ -1,22 +1,28 @@
-# Quickstart for POC3
+# POC 3
 
-## Install requirements
+## Setup
 
 - Install nodejs
 - Install npm packages with `npm install`
 - Install contracts with `truffle install`
 
-## Prepare configuration
+## Query Engine
+
+The POC 3 also uses a custom query engine for BigchainDB. The details about using and setting up the query engine can be found in [./query-engine/readme.md](./query-engine/readme.md).
+
+The smart contract in POC 3 uses the query engine API for BigchainDB queries.
+
+## Configure
 
 - Get api key from [Infura.io](https://infura.io/)
-- Generate keys and addresess with `npm run generate`
+- Generate keys and addresses with `npm run generate`
 - Create .env file from .env-example
 
-## Deploy contracts to rinkeby
+## Deploy contract
 
 - Compile contracts with `truffle compile`
-- Deploy contracts to rinkeby network `truffle migrate --network rinkeby`
-- Update .env with new BDBADAPTERADDRESS
+- Deploy contracts to either rinkeby or private Ethereum network `truffle migrate --network [rinkeby | development]`
+- Update .env with new `BDBADAPTERADDRESS`
 
 ## Execute transfer
 
@@ -35,5 +41,5 @@ The test deploys the contract on the Rinkeby network, executes the oraclize quer
 ## Additional Information - Running in private ethereum network
 
 We requested the [oraclize.it](https://www.oraclize.it) team and secured the credentials to beta test their upcoming product [Stargate](https://docs.oraclize.it/#development-tools-ethpm).
-Using stargate we were successful in running the POC end-to-end on our private ethereum network setup.
-Please connect with the oraclize team to get further information about Stargate and how to use it.
+
+Using `Stargate` we were successful in running the POC end-to-end on our private ethereum network setup.

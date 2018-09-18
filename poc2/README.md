@@ -1,4 +1,6 @@
-# Transaction listener and replicator for Ethereum and BigchainDB
+# POC 2
+
+Transaction listener and replicator for Ethereum and BigchainDB
 
 ## Structure
 
@@ -24,8 +26,8 @@
 3. Update the `network.config.json` with the specific values of the bigchaindb and ethereum hosts.
 4. Deploy the smart contracts by running `truffle migrate` in the root folder.
 5. Copy the address of the `Token` printed after the `truffle migrate` into the `token.config.json`.
-6. To run the listner execute `npm start`.
-7. The listern is up & running and listening for `Transfer` events on your deployed contract.
+6. To run the listener execute `npm start`.
+7. The listener is up & running and listening for `Transfer` events on your deployed contract.
 
 ## Build using docker
 

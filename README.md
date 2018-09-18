@@ -2,30 +2,29 @@
 
 The code in this repository implements [BEP-15 (Ethereum Integration Tools & Demo 1)](https://github.com/bigchaindb/BEPs/tree/master/15). For more details on what is being done here, please read the mentioned BEP first.
 
-This repository contains three proof of concepts:
+This repository contains three proofs of concepts:
 
-## PoC 1 (/poc1)
+## PoC 1 (/poc1) (public Ethereum with oraclize)
 
-First proof of concept is about truck creating location updates on BigchainDB and can initiate payment on ethereum if his location is the same as delivery location.
+POC1 tries to showcase an approach, using which we can leverage the decentralized data storage capability of BigchainDB and decentralized logic execution (smart contracts) of ethereum.
 
 ### PoC1 flow
 
-- Truck heads towards location and is constantly creating assets to BigchainDB with current location.
-- Truck arrives to destination and location is stored on BigchainDB.
-- Receiver initiates payment over Ethereum contract which checks with help of Oraclize if location on BigchainDB is same as delivery location.
-- Ether is transferred to address if location is the same.
+POC1 queries and fetches the data stored in BigchainDB when a smart contract function is invoked (or a condition is met) using the oraclize service.
+
+On successfully retrieval of data using oraclize, the smart contract evaluates and executes the logic and performs the requested operation.
 
 ### The /poc1 directory contains
 
-- Truck data generation script in /truck
-- Payment initiation in nodejs over `infura` network in /oracle/src/index.js
+- Data generation functions for BigchainDB in /bdb
+- Payment initiation in Ethereum smart contract using `infura` network in /oracle/src/index.js
 - Ethereum contracts are in /oracle/contracts
 
 ## PoC 2 (/poc2)
 
 This proof of concept creates ERC20 token on Ethereum network and listens for token transfers. All token transfers are replicated on BigchainDB as divisible asset transfers.
 
-### PoC2 flow
+### PoC2 flow (private Ethereum with custom service)
 
 - Ethereum and BigchainDB get ERC20 token and Divisible asset minted
 - Service listens to Ethereum network for our ERC20 token transfers
@@ -36,17 +35,21 @@ This proof of concept creates ERC20 token on Ethereum network and listens for to
 - ERC20 token contract in /contracts
 - Listener in nodejs that transfers divisible assets in /src/eth.js
 
-## PoC 3 (/poc3)
+## PoC 3 (/poc3) (private Ethereum with Stargate)
 
-Third proof of concept is about logging scans as create transaction on BigchainDB and retrieving number of transactions created between two dates that we set as parameters.
+Third proof of concept is similar to POC 1 but it uses a slightly complex query and smart contract. It also uses a private Ethereum network and the integration between Ethereum and BigchainDB is done using the `Stargate` tool from Oraclize.
 
 ### PoC3 flow
 
 - Create scans as assets on BigchainDB with timestamp
-- Execute smart contract that uses query-engine to retrieve number of transaction between two dates.
-- If number of transactions is greater then predefined amount the ether is transferred.
+- Execute smart contract that uses query-engine to retrieve number of transaction for a particular output (public key).
+- If number of transactions is greater then predefined amount then ether is transferred to the recipient.
 
 ### The /poc3 directory contains
 
 - Query-engine service which can be used to query MongoDB of BigchainDB in /query-engine
 - Ethereum contract on /eth
+
+## More Details
+
+More details about each of these proofs of concepts can be found in the respective README.md files in the corresponding directories.
