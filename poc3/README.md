@@ -42,4 +42,7 @@ The test deploys the contract on the Rinkeby network, executes the oraclize quer
 
 We requested the [oraclize.it](https://www.oraclize.it) team and secured the credentials to beta test their upcoming product [Stargate](https://docs.oraclize.it/#development-tools-ethpm).
 
-Using `Stargate` we were successful in running the POC end-to-end on our private ethereum network setup.
+After setting up the stargate, you only need to specify the Stargate connection details in the contract constructor.
+Using `Stargate`, we were successful in running the POC end-to-end on our private ethereum network setup.
+
+For getting access to the Stargate platform, please connect with the Oraclize team.
