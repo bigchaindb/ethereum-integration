@@ -32,7 +32,7 @@ The smart contract in POC 3 uses the query engine API for BigchainDB queries.
 
 The test deploys the contract on the Rinkeby network, executes the oraclize query and listens to the events to track the progress of the query.
 
-## To execute the test
+### To execute the test
 
 - Modify the `test/TestParam.json` as per the requirement.
 - Make sure the `from_address` mentioned in the `test/TestParam.json` is unlocked during the test execution and has sufficient funds. Since this account is going to be used for contract deployment and transaction execution.
@@ -40,9 +40,8 @@ The test deploys the contract on the Rinkeby network, executes the oraclize quer
 
 ## Additional Information - Running in private ethereum network
 
-We requested the [oraclize.it](https://www.oraclize.it) team and secured the credentials to beta test their upcoming product [Stargate](https://docs.oraclize.it/#development-tools-ethpm).
+We requested the [Oraclize](https://www.oraclize.it) team to allow us to use [Stargate](https://docs.oraclize.it/#development-tools-future) (beta) for integration with private Ethereum network. They helped us with the credentials and setup instructions. From there, it was a breeze to setup Stargate and use it just like we use the Oraclize service for public Ethereum network.
 
-After setting up the stargate, you only need to specify the Stargate connection details in the contract constructor.
 Using `Stargate`, we were successful in running the POC end-to-end on our private ethereum network setup.
 
-For getting access to the Stargate platform, please connect with the Oraclize team.
+For more details on Stargate and how to use it, please directly [connect with the Oraclize team](mailto:info@oraclize.it).
