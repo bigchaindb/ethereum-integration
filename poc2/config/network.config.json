@@ -1,14 +1,14 @@
 {
   "bigchaindb":{
-    "host": "https://test.bigchaindb.com",
+    "host": "<BigchainDB host>",
     "api": "/api/v1/",
     "headers": {
-      "app_id":"b5dbe8f4",
-      "app_key": "79bd326d12d1be828afcd8c5540fa2a8"
+      "app_id": "<Bigchaindb App_id>",
+      "app_key": "<Bigchaindb App_key>"
     }
   },
   "ethereum":{
-    "host":"http://192.168.86.245:8545",
-    "fromAddress": "0x3cf3a1d91c8628d33aaf5184ced04c55c437a0df"
+    "host": "<Ethereum host>",
+    "fromAddress": "<From address>"
   }
 }

@@ -1,5 +1,5 @@
 var BdbAdapter = artifacts.require("./BdbAdapter.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(BdbAdapter,"http://eth-bdb.westeurope.cloudapp.azure.com:4000/query", 10);
+  deployer.deploy(BdbAdapter,"<host of BigchainDB Query engine>", 10);
 };
